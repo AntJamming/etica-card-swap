@@ -40,7 +40,7 @@ function DCards() {
     if (situation.length === 0) {
       setFinished(true);
       const stringData = decision.reduce((result, item) => {
-        return `${result}${item.value}|`;
+        return `${result}${item.value}-`;
       }, "");
       const docRef = addDoc(collection(database, "answers"), {
         values: stringData,
