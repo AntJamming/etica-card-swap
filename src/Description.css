@@ -1,0 +1,10 @@
+.description {
+    padding: 5rem;
+    color: rgb(49, 49, 49);
+    -webkit-box-shadow: inset 0 0 10px 0;
+        box-shadow: inset 0 0 10px 0;
+    text-align: center;
+    margin:3rem auto 3rem auto;
+    background-color: rgba(230, 230, 230, 0.933);
+    border-radius: 30px;
+}
