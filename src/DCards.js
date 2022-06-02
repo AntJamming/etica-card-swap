@@ -11,6 +11,7 @@ import "reactjs-popup/dist/index.css";
 
 function DCards() {
   const [decision, setDecision] = useState([]);
+  const [finished, setFinished] = useState(false);
   const [situation, setSituation] = useState([
     {
       id: 1,
@@ -22,7 +23,7 @@ function DCards() {
   const getData = async () => {
     return await query(collection(database, "cards"));
   };
-  
+
   useEffect(() => {
     getData().then((query) => {
       const unsubscribe = onSnapshot(query, (QuerySnapshot) =>
@@ -37,11 +38,11 @@ function DCards() {
 
   useEffect(() => {
     if (situation.length === 0) {
-      
-      const stringData = decision.reduce((result,item) => {
-        return `${result}${item.value}|`
-      },"");
-      const docRef =  addDoc(collection(database, "answers"), {
+      setFinished(true);
+      const stringData = decision.reduce((result, item) => {
+        return `${result}${item.value}|`;
+      }, "");
+      const docRef = addDoc(collection(database, "answers"), {
         values: stringData,
       });
     }
@@ -51,27 +52,30 @@ function DCards() {
     if (decision.length > 0) {
       console.log(decision);
     }
-
-  },[decision]);
-
-  
+  }, [decision]);
 
   const deleteItem = (index) => {
     setSituation((situation) => situation.filter((situ, i) => i !== index));
   };
 
   const onSwipe = (direction) => {
-
-   
-    if (direction === 'left' || direction ==='right'){
-      setDecision((decision) => [...decision, {value: direction }]);
+    if (direction === "left" || direction === "right") {
+      setDecision((decision) => [...decision, { value: direction }]);
     }
-    
   };
 
   return (
     <div className="cardcontainer">
-      <Popup></Popup>
+      <Popup open={finished} modal nested>
+        {(close) => (
+          <div className="modal">
+            <div className="content">
+              <p>Gracias por haber contestado esta encuesta.</p>
+            </div>
+            <div className="actions"></div>
+          </div>
+        )}
+      </Popup>
       {situation.map((situ, index) => (
         <div className="swipe">
           <h1 className="descriptionContainer" key={situ.description}>
